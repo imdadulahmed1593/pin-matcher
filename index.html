@@ -1,58 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pin Generator</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input class="form-control" type="text">
+                    <input id="generatedPin" class="form-control" type="text">
                     <button class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input class="form-control" type="text">
+                    <input class="form-control" id="current-input"type="text">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
-                              <div class="button">7</div>
-                              <div class="button">8</div>
-                              <div class="button">9</div>
+                                <div class="button num-btn">7</div>
+                                <div class="button num-btn">8</div>
+                                <div class="button num-btn">9</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">4</div>
-                              <div class="button">5</div>
-                              <div class="button">6</div>
+                                <div class="button num-btn">4</div>
+                                <div class="button num-btn">5</div>
+                                <div class="button num-btn">6</div>
                             </div>
                             <div class="calc-button-row">
-                              <div class="button">1</div>
-                              <div class="button">2</div>
-                              <div class="button">3</div>
+                                <div class="button num-btn">1</div>
+                                <div class="button num-btn">2</div>
+                                <div class="button num-btn">3</div>
                             </div>
                             <div class="calc-button-row">
-                                <div class="button"><</div>
-                                <div class="button">0</div>
-                                <div class="button">C</div>
+                                <div class="button delete-each-btn"><
+                                </div>
+                                <div class="button num-btn">0
+                                </div>
+                                <div class="button delete-all">C</div>
                             </div>
                             <div>
                                 <button type="submit" class="submit-btn">Submit</button>
                                 <p class="action-left">3 try left</p>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="notify-section">
+                <p id= "fail-notify" class="notify">❌ Pin Didn't Match, Please try again</p>
+                <p  id= "match-notify" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+            </div>
         </div>
-        <div class="notify-section">
-            <p class="notify">❌ Pin Didn't Match, Please try again</p>
-            <p class="notify">✅ Pin Matched... Secret door is opening for you</p>
-        </div>
-    </div>
+
+        <script>
+            //generate button handler
+            
+            document.querySelector(".generate-btn").addEventListener("click", function () {
+                var randomNum = Math.floor(Math.random() * (10000 - 1000)) + 1000;
+                document.getElementById("generatedPin").value = randomNum;
+
+            });
+
+            //num button handler
+            var numOfInputButtons = document.querySelectorAll(".num-btn").length;
+            for (var i = 0; i < numOfInputButtons;i++) {
+                document.querySelectorAll(".num-btn")[i].addEventListener("click", function () {
+                   var currentInput = document.getElementById("current-input").value;
+                   var numInput = this.innerText;
+                   currentInput = currentInput+numInput;
+                   document.getElementById("current-input").value= currentInput;
+                   
+                });
+            }
+
+
+            //submit button handler
+            document.querySelector(".submit-btn").addEventListener("click",function(){
+                var currentInputValue = parseInt(document.getElementById("current-input").value);
+                var randomNum = parseInt(document.getElementById("generatedPin").value);
+                // console.log(randomNum);
+                // console.log(currentInputValue);
+                if (currentInputValue == randomNum){
+                    // document.querySelector(".pin-generator").style.display="none";
+                    // document.querySelector(".input-section").style.display="none";
+                    document.querySelector("#fail-notify").style.display="none"; 
+                    document.querySelector("#match-notify").style.display="block";
+                 
+                }else {
+                    // document.querySelector(".pin-generator").style.display="none";
+                    // document.querySelector(".input-section").style.display="none";
+                    
+                        // var i=0;
+                        // document.querySelector("#fail-notify").style.display="block"; 
+                        // document.querySelector("#match-notify").style.display="none";
+                        // document.querySelector(".action-left").innerText= 2-i + " try left";
+                        // i++;
+                    
+                    document.querySelector("#fail-notify").style.display="block"; 
+                    document.querySelector("#match-notify").style.display="none";
+                }
+            });
+
+            //deleteEach button handler
+            document.querySelector(".delete-each-btn").addEventListener("click",function(){
+                // console.log("clicked");
+                var newCurrentInput = document.getElementById("current-input").value;
+                // /
+                var currentInput = newCurrentInput.substring(0, newCurrentInput.length-1);
+                // console.log(currentInput);
+                document.getElementById("current-input").value= currentInput;
+            });
+
+            //deleteAll button handler
+            document.querySelector(".delete-all").addEventListener("click",function(){
+
+                document.getElementById("current-input").value = '' ;
+
+
+
+            });
+        </script>
 </body>
+
 </html>
